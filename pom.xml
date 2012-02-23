@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>showcase-ee</groupId>
+    <artifactId>showcase-ee</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>showcase-ee-persistence</module>
+        <module>showcase-ee-common</module>
+        <module>showcase-ee-service</module>
+    </modules>
+
+    <properties>
+        <app.name>showcase-ee</app.name>
+        <service.name>${app.name}-${parsedVersion.majorVersion}.${parsedVersion.minorVersion}</service.name>
+
+        <spring-data-jpa.version>1.0.3.RELEASE</spring-data-jpa.version>
+        <hibernate-envers.version>4.1.0.Final</hibernate-envers.version>
+        <slf4j.version>1.6.4</slf4j.version>
+
+        <junit.version>4.9</junit.version>
+        <fest-assert.version>1.4</fest-assert.version>
+        <arquillian.version>1.0.0.CR7</arquillian.version>
+        <jboss.version>7.1.0.Final</jboss.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-6.0</artifactId>
+                <version>1.0.0.Final</version>
+                <type>pom</type>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring-data-jpa.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>spring-orm</artifactId>
+                        <groupId>org.springframework</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>spring-context</artifactId>
+                        <groupId>org.springframework</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>aspectjrt</artifactId>
+                        <groupId>org.aspectj</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-envers</artifactId>
+                <version>${hibernate-envers.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.easytesting</groupId>
+                <artifactId>fest-assert</artifactId>
+                <version>${fest-assert.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                <version>${jboss.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${arquillian.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>parse-version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

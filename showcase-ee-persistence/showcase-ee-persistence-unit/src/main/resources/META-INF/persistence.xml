@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="showcase">
+        <jta-data-source>java:jboss/datasources/Showcase</jta-data-source>
+        <properties>
+            <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

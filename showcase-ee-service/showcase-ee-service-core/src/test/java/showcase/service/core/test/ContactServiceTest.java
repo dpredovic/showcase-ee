@@ -16,10 +16,10 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import showcase.common.CommunicationType;
-import showcase.common.ContactType;
 import showcase.service.api.ContactService;
 import showcase.service.api.dto.ContactDto;
+import showcase.service.api.type.CommunicationType;
+import showcase.service.api.type.ContactType;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -72,15 +72,15 @@ public class ContactServiceTest {
     public void getContact() {
         Long id = customerCreator.createCustomer().getId();
 
-        ContactDto standardContact = contactService.getContactByCustomerAndType(id, ContactType.STANDARD);
+        ContactDto standardContact = contactService.getContactByCustomerAndType(id, ContactType.STANDARD.toString());
         assertThat(standardContact).isNotNull();
-        assertThat(standardContact.getContactType()).isEqualTo(ContactType.STANDARD);
+        assertThat(standardContact.getContactType()).isEqualTo(ContactType.STANDARD.toString());
         assertThat(standardContact.getCommunications()).hasSize(1);
-        assertThat(standardContact.getCommunications().get(CommunicationType.EMAIL)).isEqualTo("test@mail.com");
+        assertThat(standardContact.getCommunications().get(CommunicationType.EMAIL.toString())).isEqualTo("test@mail.com");
 
-        ContactDto invoicingContact = contactService.getContactByCustomerAndType(id, ContactType.INVOICING);
+        ContactDto invoicingContact = contactService.getContactByCustomerAndType(id, ContactType.INVOICING.toString());
         assertThat(invoicingContact).isNotNull();
-        assertThat(invoicingContact.getContactType()).isEqualTo(ContactType.INVOICING);
+        assertThat(invoicingContact.getContactType()).isEqualTo(ContactType.INVOICING.toString());
 
         List<ContactDto> contacts = contactService.getContactsByCustomer(id);
         assertThat(contacts).hasSize(4);

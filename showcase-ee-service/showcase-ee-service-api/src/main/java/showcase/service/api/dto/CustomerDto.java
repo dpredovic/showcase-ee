@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import showcase.common.CustomerType;
-import showcase.common.DispatchType;
-
 @XmlRootElement
 public class CustomerDto implements Serializable {
 
@@ -18,9 +15,9 @@ public class CustomerDto implements Serializable {
 
     private Date registrationDate;
 
-    private CustomerType customerType;
+    private String customerType;
 
-    private DispatchType dispatchType;
+    private String dispatchType;
 
     private Map<String, String> properties = new HashMap<String, String>();
 
@@ -48,19 +45,19 @@ public class CustomerDto implements Serializable {
         this.registrationDate = registrationDate;
     }
 
-    public CustomerType getCustomerType() {
+    public String getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(CustomerType customerType) {
+    public void setCustomerType(String customerType) {
         this.customerType = customerType;
     }
 
-    public DispatchType getDispatchType() {
+    public String getDispatchType() {
         return dispatchType;
     }
 
-    public void setDispatchType(DispatchType dispatchType) {
+    public void setDispatchType(String dispatchType) {
         this.dispatchType = dispatchType;
     }
 
@@ -81,8 +78,8 @@ public class CustomerDto implements Serializable {
 
         if (cooperationPartnerId != null ? !cooperationPartnerId.equals(that.cooperationPartnerId) : that.cooperationPartnerId != null)
             return false;
-        if (customerType != that.customerType) return false;
-        if (dispatchType != that.dispatchType) return false;
+        if (customerType != null ? !customerType.equals(that.customerType) : that.customerType != null) return false;
+        if (dispatchType != null ? !dispatchType.equals(that.dispatchType) : that.dispatchType != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (properties != null ? !properties.equals(that.properties) : that.properties != null) return false;
         if (registrationDate != null ? !registrationDate.equals(that.registrationDate) : that.registrationDate != null)

@@ -11,7 +11,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import showcase.common.ContactType;
 import showcase.service.api.ContactService;
 import showcase.service.api.CustomerService;
 import showcase.service.api.dto.ContactDto;
@@ -43,7 +42,7 @@ public class RestServiceBean {
             @PathParam("id")
             long customerId,
             @PathParam("type")
-            ContactType type) {
+            String type) {
         return contactService.getContactByCustomerAndType(customerId, type);
     }
 

@@ -7,14 +7,14 @@ import javax.ejb.EJB;
 import javax.inject.Singleton;
 
 import org.joda.time.LocalDate;
-import showcase.common.CommunicationType;
-import showcase.common.ContactType;
-import showcase.common.CustomerType;
-import showcase.common.DispatchType;
 import showcase.service.api.CustomerService;
 import showcase.service.api.dto.ContactDto;
 import showcase.service.api.dto.CreateCustomerRequestDto;
 import showcase.service.api.dto.CustomerDto;
+import showcase.service.api.type.CommunicationType;
+import showcase.service.api.type.ContactType;
+import showcase.service.api.type.CustomerType;
+import showcase.service.api.type.DispatchType;
 
 @Singleton
 public class TestCustomerCreator {
@@ -30,13 +30,13 @@ public class TestCustomerCreator {
         ContactDto standardContact = new ContactDto();
         standardContact.setFirstName("stfn" + suffix);
         standardContact.setLastName("stln" + suffix);
-        standardContact.setContactType(ContactType.STANDARD);
-        standardContact.getCommunications().put(CommunicationType.EMAIL, "test" + suffix + "@mail.com");
+        standardContact.setContactType(ContactType.STANDARD.toString());
+        standardContact.getCommunications().put(CommunicationType.EMAIL.toString(), "test" + suffix + "@mail.com");
 
         ContactDto invoicingContact = new ContactDto();
         invoicingContact.setFirstName("infn" + suffix);
         invoicingContact.setLastName("inln" + suffix);
-        invoicingContact.setContactType(ContactType.INVOICING);
+        invoicingContact.setContactType(ContactType.INVOICING.toString());
 
         ContactDto otherContact1 = new ContactDto();
         otherContact1.setFirstName("otfn1" + suffix);
@@ -51,8 +51,8 @@ public class TestCustomerCreator {
 
         CustomerDto customer = new CustomerDto();
         customer.setCooperationPartnerId(1L);
-        customer.setCustomerType(CustomerType.PERSON);
-        customer.setDispatchType(DispatchType.EMAIL);
+        customer.setCustomerType(CustomerType.PERSON.toString());
+        customer.setDispatchType(DispatchType.EMAIL.toString());
         customer.setRegistrationDate(LocalDate.now().toDate());
         customer.setProperties(properties);
 

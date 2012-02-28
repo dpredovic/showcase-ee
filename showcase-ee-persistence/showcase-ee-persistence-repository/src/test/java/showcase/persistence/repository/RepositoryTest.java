@@ -17,11 +17,12 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import showcase.common.CommunicationType;
-import showcase.common.ContactType;
-import showcase.common.CustomerType;
 import showcase.persistence.unit.Contact;
 import showcase.persistence.unit.Customer;
+import showcase.service.api.type.CommunicationType;
+import showcase.service.api.type.ContactType;
+import showcase.service.api.type.CustomerType;
+import showcase.service.api.type.DispatchType;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -58,6 +59,7 @@ public class RepositoryTest {
                                 .goOffline()
                                 .artifacts(
                                         "org.easytesting:fest-assert:1.4",
+                                        "showcase-ee:showcase-ee-service-api:1.0.0",
                                         "org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api:1.0.0-beta-5")
                                 .resolveAsFiles()
                 );
@@ -71,9 +73,10 @@ public class RepositoryTest {
         {
             transaction.begin();
             Customer customer = new Customer();
-            customer.setCustomerType(CustomerType.PERSON);
+            customer.setCustomerType(CustomerType.PERSON.toString());
             customer.setRegistrationDate(new Date());
             customer.setCooperationPartnerId(1L);
+            customer.setDispatchType(DispatchType.EMAIL.toString());
             customer.getProperties().put("platinum", "true");
 
             customer = customerDao.save(customer);
@@ -111,9 +114,11 @@ public class RepositoryTest {
         contact.setLastName("ln" + i);
         contact.setStreet("str" + i);
         contact.setZipCode("zip" + i);
-        contact.setContactType(type);
+        if (type != null) {
+            contact.setContactType(type.toString());
+        }
 
-        contact.getCommunications().put(CommunicationType.EMAIL, "test" + i + "@test");
+        contact.getCommunications().put(CommunicationType.EMAIL.toString(), "test" + i + "@test");
 
         contact.setCustomer(customer);
         return contact;

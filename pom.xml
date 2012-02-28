@@ -11,7 +11,6 @@
 
     <modules>
         <module>showcase-ee-persistence</module>
-        <module>showcase-ee-common</module>
         <module>showcase-ee-service</module>
     </modules>
 
@@ -44,16 +43,16 @@
                 <version>${spring-data-jpa.version}</version>
                 <exclusions>
                     <exclusion>
+                        <groupId>org.springframework</groupId>
                         <artifactId>spring-orm</artifactId>
-                        <groupId>org.springframework</groupId>
                     </exclusion>
                     <exclusion>
+                        <groupId>org.springframework</groupId>
                         <artifactId>spring-context</artifactId>
-                        <groupId>org.springframework</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>aspectjrt</artifactId>
                         <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>

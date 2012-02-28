@@ -11,14 +11,6 @@
 
     <artifactId>showcase-ee-service-api</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>showcase-ee</groupId>
-            <artifactId>showcase-ee-common</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <resources>
             <resource>

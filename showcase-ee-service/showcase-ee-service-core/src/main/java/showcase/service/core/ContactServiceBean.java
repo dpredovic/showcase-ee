@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.jws.WebService;
 
 import org.dozer.Mapper;
-import showcase.common.ContactType;
 import showcase.persistence.repository.ContactRepository;
 import showcase.persistence.unit.Contact;
 import showcase.service.api.ContactService;
@@ -45,7 +44,7 @@ public class ContactServiceBean implements ContactService {
     }
 
     @Override
-    public ContactDto getContactByCustomerAndType(long customerId, ContactType type) {
+    public ContactDto getContactByCustomerAndType(long customerId, String type) {
         Contact contact = contactDao.findByCustomerIdAndContactType(customerId, type);
         if (contact == null) {
             return null;

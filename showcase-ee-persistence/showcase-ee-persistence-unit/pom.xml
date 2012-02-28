@@ -13,11 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>showcase-ee</groupId>
-            <artifactId>showcase-ee-common</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.spec</groupId>
             <artifactId>jboss-javaee-6.0</artifactId>
             <type>pom</type>

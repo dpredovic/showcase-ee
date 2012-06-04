@@ -11,6 +11,13 @@
 
     <artifactId>showcase-ee-service-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <resources>
             <resource>

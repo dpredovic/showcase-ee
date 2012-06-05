@@ -25,7 +25,7 @@
 
         <junit.version>4.9</junit.version>
         <fest-assert.version>1.4</fest-assert.version>
-        <arquillian.version>1.0.0.CR7</arquillian.version>
+        <arquillian.version>1.0.1.Final</arquillian.version>
         <jboss.version>7.1.0.Final</jboss.version>
     </properties>
 

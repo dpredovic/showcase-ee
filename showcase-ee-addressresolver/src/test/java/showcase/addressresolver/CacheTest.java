@@ -1,13 +1,10 @@
-package showcase.service.core.test;
+package showcase.addressresolver;
 
 import java.io.File;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
@@ -17,28 +14,33 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import showcase.service.api.ContactService;
-import showcase.service.api.dto.ContactDto;
-import showcase.service.api.type.CommunicationType;
-import showcase.service.api.type.ContactType;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class ContactServiceTest {
-
-    @EJB
-    private ContactService contactService;
+public class CacheTest {
 
     @Inject
-    private TestCustomerCreator customerCreator;
+    private AddressResolver addressResolver;
 
     @Deployment
-    public static Archive<?> createDeployment() {
+    public static EnterpriseArchive createDeployment() {
+/*
+        // todo: for some reason i can't get @Alternative to work with jboss 7.1.1, so i have to make dummy impl a default one atm
+
+        BeansDescriptor beans = Descriptors.importAs(BeansDescriptor.class).fromFile("target/classes/META-INF/beans.xml");
+        beans.createAlternatives().clazz("showcase.addressresolver.DummyAddressResolver");
+        System.out.println("beans = " + beans.exportAsString());
+*/
+
         JavaArchive ejbJar = ShrinkWrap.create(JavaArchive.class);
         ejbJar.as(ExplodedImporter.class).importDirectory("target/classes");
-        ejbJar.addClasses(ContactServiceTest.class, TestCustomerCreator.class);
-        System.out.println("ejbJar = " + ejbJar.toString(true));
+/*
+        ejbJar.delete("META-INF/beans.xml");
+        ejbJar.addAsManifestResource(new StringAsset(beans.exportAsString()), "beans.xml");
+*/
+        ejbJar.addClass(CacheTest.class);
+        System.out.println("jar = " + ejbJar.toString(true));
 
         EnterpriseArchive ear = ShrinkWrap.create(EnterpriseArchive.class)
                 .addAsModule(ejbJar)
@@ -54,35 +56,41 @@ public class ContactServiceTest {
                                 .use(MavenDependencyResolver.class)
                                 .goOffline()
                                 .artifacts(
-                                        "joda-time:joda-time:2.0",
                                         "org.easytesting:fest-assert:1.4",
                                         "org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api:1.0.0-beta-7",
                                         "org.jboss.shrinkwrap:shrinkwrap-api:1.0.1")
                                 .resolveAsFiles())
                 .addAsManifestResource(new File("target/test-classes/jboss-deployment-structure.xml")
                 );
-
         System.out.println("ear = " + ear.toString(true));
         return ear;
     }
 
     @Test
-    public void getContact() {
-        Long id = customerCreator.createCustomer().getId();
+    public void testCache() throws Exception {
+        {
+            String city = addressResolver.resolveCity("X", "Y");
+            assertThat(city).isEqualTo("City-X/Y");
+            assertThat(DummyAddressResolver.counter).isEqualTo(1);
+        }
 
-        ContactDto standardContact = contactService.getContactByCustomerAndType(id, ContactType.STANDARD.toString());
-        assertThat(standardContact).isNotNull();
-        assertThat(standardContact.getContactType()).isEqualTo(ContactType.STANDARD.toString());
-        assertThat(standardContact.getCommunications()).hasSize(1);
-        assertThat(standardContact.getCommunications().get(CommunicationType.EMAIL.toString())).isEqualTo("test@mail.com");
+        {
+            String city = addressResolver.resolveCity("X", "Y");
+            assertThat(city).isEqualTo("City-X/Y");
+            assertThat(DummyAddressResolver.counter).isEqualTo(1);
+        }
 
-        ContactDto invoicingContact = contactService.getContactByCustomerAndType(id, ContactType.INVOICING.toString());
-        assertThat(invoicingContact).isNotNull();
-        assertThat(invoicingContact.getContactType()).isEqualTo(ContactType.INVOICING.toString());
+        {
+            String city = addressResolver.resolveCity("Y", "Z");
+            assertThat(city).isEqualTo("City-Y/Z");
+            assertThat(DummyAddressResolver.counter).isEqualTo(2);
+        }
 
-        List<ContactDto> contacts = contactService.getContactsByCustomer(id);
-        assertThat(contacts).hasSize(4);
-        assertThat(contacts).contains(standardContact, invoicingContact);
+        {
+            String city = addressResolver.resolveCity("Y", "Z");
+            assertThat(city).isEqualTo("City-Y/Z");
+            assertThat(DummyAddressResolver.counter).isEqualTo(2);
+        }
 
     }
 }

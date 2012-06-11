@@ -4,45 +4,31 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>showcase-ee</artifactId>
         <groupId>showcase-ee</groupId>
-        <artifactId>showcase-ee-service</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>showcase-ee-service-core</artifactId>
+    <artifactId>showcase-ee-addressresolver</artifactId>
     <packaging>ejb</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>showcase-ee</groupId>
-            <artifactId>showcase-ee-persistence-repository</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>showcase-ee</groupId>
-            <artifactId>showcase-ee-service-api</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>showcase-ee</groupId>
-            <artifactId>showcase-ee-addressresolver</artifactId>
-            <version>1.0.0</version>
-        </dependency>
         <dependency>
             <groupId>org.jboss.spec</groupId>
             <artifactId>jboss-javaee-6.0</artifactId>
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
-            <version>5.3.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
         </dependency>
 
         <dependency>
@@ -52,12 +38,6 @@
         <dependency>
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.0</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
@@ -74,6 +54,12 @@
             <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+            <artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

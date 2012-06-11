@@ -2,6 +2,7 @@ package showcase.service.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Remote;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import javax.jws.WebService;
 
 import org.dozer.Mapper;
+import showcase.addressresolver.AsyncAddressResolver;
 import showcase.persistence.repository.ContactRepository;
 import showcase.persistence.unit.Contact;
 import showcase.service.api.ContactService;
@@ -33,6 +35,9 @@ public class ContactServiceBean implements ContactService {
     @Inject
     private Mapper mapper;
 
+    @Inject
+    private AsyncAddressResolver addressResolver;
+
     @Override
     public ContactDto getContact(long contactId) {
         Contact contact = contactDao.findOne(contactId);
@@ -40,7 +45,7 @@ public class ContactServiceBean implements ContactService {
             return null;
         }
 
-        return mapper.map(contact, ContactDto.class);
+        return mapAndEnrichAddress(contact);
     }
 
     @Override
@@ -50,7 +55,7 @@ public class ContactServiceBean implements ContactService {
             return null;
         }
 
-        return mapper.map(contact, ContactDto.class);
+        return mapAndEnrichAddress(contact);
     }
 
     @Override
@@ -59,9 +64,23 @@ public class ContactServiceBean implements ContactService {
 
         List<ContactDto> contactDtos = new ArrayList<ContactDto>(contacts.size());
         for (Contact contact : contacts) {
-            ContactDto contactDto = mapper.map(contact, ContactDto.class);
+            ContactDto contactDto = mapAndEnrichAddress(contact);
             contactDtos.add(contactDto);
         }
         return contactDtos;
     }
+
+    private ContactDto mapAndEnrichAddress(Contact contact) {
+        ContactDto contactDto = mapper.map(contact, ContactDto.class);
+        Future<String> city = addressResolver.resolveCity(contactDto.getCountryCode(), contactDto.getZipCode());
+        Future<String> country = addressResolver.resolveCountry(contactDto.getCountryCode());
+        try {
+            contactDto.setCity(city.get());
+            contactDto.setCountryName(country.get());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return contactDto;
+    }
+
 }

@@ -12,6 +12,7 @@
     <modules>
         <module>showcase-ee-persistence</module>
         <module>showcase-ee-service</module>
+        <module>showcase-ee-addressresolver</module>
     </modules>
 
     <properties>
@@ -23,10 +24,12 @@
         <slf4j.version>1.6.4</slf4j.version>
         <lombok.version>0.11.0</lombok.version>
 
-        <junit.version>4.9</junit.version>
+        <junit.version>4.10</junit.version>
         <fest-assert.version>1.4</fest-assert.version>
         <arquillian.version>1.0.1.Final</arquillian.version>
-        <jboss.version>7.1.0.Final</jboss.version>
+        <jboss.version>7.1.1.Final</jboss.version>
+        <infinispan.version>5.1.2.FINAL</infinispan.version>
+        <resteasy-jaxrs.version>2.3.2.Final</resteasy-jaxrs.version>
     </properties>
 
     <dependencyManagement>
@@ -80,6 +83,45 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxrs</artifactId>
+                <version>${resteasy-jaxrs.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-cdi</artifactId>
+                <version>${infinispan.version}</version>
+                <scope>runtime</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.enterprise</groupId>
+                        <artifactId>cdi-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.infinispan</groupId>
+                        <artifactId>infinispan-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.infinispan</groupId>
+                        <artifactId>infinispan-client-hotrod</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>jboss-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.rhq.helpers</groupId>
+                        <artifactId>rhq-pluginAnnotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>javax.cache</groupId>
+                <artifactId>cache-api</artifactId>
+                <version>0.4</version>
             </dependency>
 
             <dependency>

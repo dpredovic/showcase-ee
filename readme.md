@@ -7,3 +7,5 @@ This project should show some of the "state of the art" EE capabilities, includi
 * integration with JBoss 7
 * integration tests via Arquillian
 * proxy based repository (DAO) implementation via spring-data-jpa
+* declarative caching using Infinispan CDI integration
+* async method execution using EJB 3.1

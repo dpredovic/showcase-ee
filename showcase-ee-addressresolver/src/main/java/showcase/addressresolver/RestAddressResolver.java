@@ -1,11 +1,11 @@
 package showcase.addressresolver;
 
+import org.jboss.resteasy.client.ProxyFactory;
+
 import javax.annotation.PostConstruct;
 import javax.cache.annotation.CacheResult;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Singleton;
-
-import org.jboss.resteasy.client.ProxyFactory;
 
 @Singleton
 @Alternative
@@ -27,7 +27,6 @@ public class RestAddressResolver implements AddressResolver {
 
     @PostConstruct
     private void init() {
-//        RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
         delegate = ProxyFactory.create(AddressResolver.class, "");
     }
 

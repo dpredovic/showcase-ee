@@ -4,10 +4,10 @@ import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.Local;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 import javax.inject.Inject;
 
-@Stateless
+@Singleton
 @Local
 @Asynchronous
 public class AsyncAddressResolverImpl implements AsyncAddressResolver {

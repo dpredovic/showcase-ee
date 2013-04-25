@@ -1,20 +1,11 @@
 package showcase.persistence.repository;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import javax.inject.Inject;
-import javax.transaction.UserTransaction;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import showcase.persistence.unit.Contact;
@@ -23,6 +14,13 @@ import showcase.service.api.type.CommunicationType;
 import showcase.service.api.type.ContactType;
 import showcase.service.api.type.CustomerType;
 import showcase.service.api.type.DispatchType;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import javax.inject.Inject;
+import javax.transaction.UserTransaction;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -40,29 +38,19 @@ public class RepositoryTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addAsResource(new File("target/classes"), "");
+        JavaArchive jar = ShrinkWrap.create(JavaArchive.class).addAsResource(new File("target/classes"), "");
         System.out.println("jar = " + jar.toString(true));
 
         WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addAsLibrary(jar)
-                .addAsLibraries(
-                        DependencyResolvers
-                                .use(MavenDependencyResolver.class)
-                                .goOffline()
-                                .includeDependenciesFromPom("pom.xml")
-                                .resolveAsFiles(new ScopeFilter("compile", "runtime"))
-                )
-                .addAsLibraries(
-                        DependencyResolvers
-                                .use(MavenDependencyResolver.class)
-                                .goOffline()
-                                .artifacts(
-                                        "org.easytesting:fest-assert:1.4",
-                                        "showcase-ee:showcase-ee-service-api:1.0.0",
-                                        "org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api:1.0.0-beta-5")
-                                .resolveAsFiles()
-                );
+                                   .addAsLibrary(jar)
+                                   .addAsLibraries(
+                                       Maven.resolver().loadPomFromFile("pom.xml").importRuntimeDependencies().asFile())
+                                   .addAsLibraries(Maven.resolver()
+                                                        .loadPomFromFile("pom.xml")
+                                                        .resolve("showcase-ee:showcase-ee-service-api",
+                                                                 "org.easytesting:fest-assert")
+                                                        .withTransitivity()
+                                                        .asFile());
         System.out.println("war = " + war.toString(true));
         return war;
     }
@@ -108,7 +96,7 @@ public class RepositoryTest {
 
     }
 
-    private Contact createContact(int i, ContactType type, Customer customer) {
+    private static Contact createContact(int i, ContactType type, Customer customer) {
         Contact contact = new Contact();
         contact.setFirstName("fn" + i);
         contact.setLastName("ln" + i);

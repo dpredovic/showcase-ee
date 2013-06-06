@@ -27,7 +27,6 @@ public class ContactServiceTest {
 
     @EJB
     private ContactService contactService;
-
     @Inject
     private TestCustomerCreator customerCreator;
 

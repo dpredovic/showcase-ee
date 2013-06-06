@@ -29,10 +29,8 @@ public class RepositoryTest {
 
     @Inject
     private CustomerRepository customerDao;
-
     @Inject
     private ContactRepository contactDao;
-
     @Inject
     private UserTransaction transaction;
 
